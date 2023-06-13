@@ -19,7 +19,11 @@ namespace DurableRetryPlayground
                 return context.LastAttemptNumber < 3;
             });
 
+            // bug/confusing: LastFailure is AggregateException
             await context.CallActivityAsync(nameof(RiskyActivity), input, options);
+
+            // correct: LastFailure is ApplicationException
+            //await context.CallActivityAsync("RiskyActivitySync", input, options);
         }
     }
 }
